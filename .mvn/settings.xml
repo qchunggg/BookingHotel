@@ -1,0 +1,14 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
+    <!-- repo cục bộ riêng, bạn chọn thư mục nào cũng được -->
+    <localRepository>D:/Code/Java/BookingHotel/m2-repo</localRepository>
+
+    <mirrors>
+        <!-- mirror Central chuẩn -->
+        <mirror>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+    </mirrors>
+</settings>
