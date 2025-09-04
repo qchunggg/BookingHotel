@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -45,9 +46,9 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PostMapping("/update-booking/{id}")
-    public ResponseEntity<BookingResponseDTO> updateBooking(@PathVariable Long id, @Valid @RequestBody BookingUpdateDTO dto) {
-        return ResponseEntity.ok(bookingService.updateBooking(id, dto));
+    @PostMapping("/update-booking")
+    public ResponseEntity<BookingResponseDTO> updateBooking(@Valid @RequestBody BookingUpdateDTO dto) {
+        return ResponseEntity.ok(bookingService.updateBooking(dto));
     }
 
     @PostMapping("/delete-booking/{id}")

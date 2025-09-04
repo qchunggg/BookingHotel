@@ -39,4 +39,7 @@ public class HotelCreateDTO {
 
     @NotBlank(message = "PayOS Checksum Key không được để trống")
     private String payosChecksumKey;
+
+    @NotNull(message = "Owner userId không được để trống")
+    private Long userId;
 }

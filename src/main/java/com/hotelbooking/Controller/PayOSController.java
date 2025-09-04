@@ -32,7 +32,7 @@ public class PayOSController {
         String orderInfo = "Thanh toán đặt phòng #" + b.getId();    // mô tả mặc định
 
         // 3) Tạo link thanh toán
-        String url = payOSPaymentService.createCheckoutLink( b.getId(), orderCode, amountVnd, orderInfo);
+        String url = payOSPaymentService.createCheckoutLink( b.getRoom().getHotel().getId(), orderCode, amountVnd, orderInfo);
 
         // 4) Trả về cho FE
         return ResponseEntity.ok(new PaymentUrlResponse(url));

@@ -20,7 +20,7 @@ public interface BookingService {
 
     BookingResponseDTO createBooking(BookingCreateDTO dto);
 
-    BookingResponseDTO updateBooking(Long id, BookingUpdateDTO dto);
+    BookingResponseDTO updateBooking(BookingUpdateDTO dto);
 
     void cancelBooking(Long id);
 

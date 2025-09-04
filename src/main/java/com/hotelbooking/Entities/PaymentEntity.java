@@ -25,6 +25,8 @@ public class PaymentEntity {
 
     private Long bookingId;
 
+    private Long hotelId;
+
     private Integer amount;
 
     private Boolean success;

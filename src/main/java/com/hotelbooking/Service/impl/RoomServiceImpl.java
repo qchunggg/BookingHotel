@@ -113,15 +113,15 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public RoomResponseDTO updateRoom(Long id, RoomUpdateDTO dto) {
-        RoomEntity entity = roomRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Không tìm thấy phòng với id: " + id));
+    public RoomResponseDTO updateRoom(RoomUpdateDTO dto) {
+        RoomEntity entity = roomRepository.findById(dto.getId())
+                .orElseThrow(() -> new NoSuchElementException("Không tìm thấy phòng với id: " + dto.getId()));
 
         // Nếu đổi số phòng thì check trùng trong cùng hotel
         if (dto.getRoomNumber() != null) {
             String newNumber = normalize(dto.getRoomNumber());
             if (!newNumber.equalsIgnoreCase(entity.getRoomNumber())
-                    && roomRepository.existsDuplicate(entity.getHotel().getId(), newNumber, id)) {
+                    && roomRepository.existsDuplicate(entity.getHotel().getId(), newNumber, dto.getId())) {
                 throw new IllegalArgumentException("Phòng đã tồn tại trong khách sạn!");
             }
             entity.setRoomNumber(newNumber);

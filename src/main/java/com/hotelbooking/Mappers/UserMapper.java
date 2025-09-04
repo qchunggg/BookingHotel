@@ -1,21 +1,23 @@
 package com.hotelbooking.Mappers;
 
 import com.hotelbooking.DTO.UserDTO.UserCreateDTO;
+import com.hotelbooking.DTO.UserDTO.UserResponseDTO;
 import com.hotelbooking.DTO.UserDTO.UserUpdateDTO;
 import com.hotelbooking.Entities.UserEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+    /* Response – KHÔNG trả password */
+    UserResponseDTO toResponseDTO(UserEntity entity);
 
-    // Mapping cho tạo mới
-    UserCreateDTO toCreateDTO(UserEntity entity);
+    /* Create */
+    @Mapping(target = "id",   ignore = true)
+    @Mapping(target = "role", ignore = true)
     UserEntity toEntity(UserCreateDTO dto);
 
-    // Mapping cho cập nhật
-    UserUpdateDTO toUpdateDTO(UserEntity entity);
-    UserEntity toEntity(UserUpdateDTO dto);
+    /* Update (copy không-null) */
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDto(UserUpdateDTO dto, @MappingTarget UserEntity entity);
 }

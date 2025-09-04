@@ -1,9 +1,6 @@
 package com.hotelbooking.Service;
 
-import com.hotelbooking.DTO.UserDTO.UserCreateDTO;
-import com.hotelbooking.DTO.UserDTO.UserFilterDTO;
-import com.hotelbooking.DTO.UserDTO.UserResponseDTO;
-import com.hotelbooking.DTO.UserDTO.UserUpdateDTO;
+import com.hotelbooking.DTO.UserDTO.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -21,4 +18,6 @@ public interface UserService {
     UserResponseDTO updateUser(UserUpdateDTO dto);
 
     void deleteUser(List<Long> ids);
+
+    void changePassword(Long id, ChangePasswordDTO dto);
 }

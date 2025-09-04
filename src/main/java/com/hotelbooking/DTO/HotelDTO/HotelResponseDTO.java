@@ -20,4 +20,6 @@ public class HotelResponseDTO {
     private String hotelImage;
 
     private Integer totalRooms;
+
+    private Long userId;
 }

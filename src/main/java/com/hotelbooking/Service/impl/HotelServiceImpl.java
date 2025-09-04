@@ -5,8 +5,10 @@ import com.hotelbooking.DTO.HotelDTO.HotelFilterDTO;
 import com.hotelbooking.DTO.HotelDTO.HotelResponseDTO;
 import com.hotelbooking.DTO.HotelDTO.HotelUpdateDTO;
 import com.hotelbooking.Entities.HotelEntity;
+import com.hotelbooking.Entities.UserEntity;
 import com.hotelbooking.Mappers.HotelMapper;
 import com.hotelbooking.Repositories.HotelRepository;
+import com.hotelbooking.Repositories.UserRepository;
 import com.hotelbooking.Service.HotelService;
 import com.hotelbooking.Utils.Utils;
 import jakarta.persistence.criteria.Expression;
@@ -30,6 +32,9 @@ public class HotelServiceImpl implements HotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private HotelMapper hotelMapper;
@@ -63,6 +68,12 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    public Page<HotelResponseDTO> getHotelsByUserId(Long userId, Pageable pageable) {
+        return hotelRepository.findAllByUserId(userId, pageable)
+                .map(hotelMapper::toResponseDTO);
+    }
+
+    @Override
     @Transactional
     public HotelResponseDTO createHotel(HotelCreateDTO dto) {
         // Chuẩn hoá input để check trùng
@@ -70,28 +81,33 @@ public class HotelServiceImpl implements HotelService {
         String addr = normalize(dto.getAddress());
         String city = normalize(dto.getCity());
 
-        boolean dup = hotelRepository.existsDuplicate(name, addr, city, null);
+        boolean dup = hotelRepository.existsDuplicate(name, addr, city, dto.getUserId(), null);
         if (dup) {
             throw new IllegalArgumentException("Khách sạn đã tồn tại!");
         }
 
         HotelEntity toSave = hotelMapper.toEntity(dto);
+        UserEntity owner = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("Không tồn tại userId: " + dto.getUserId()));
+        toSave.setUser(owner);
         HotelEntity saved = hotelRepository.save(toSave);
         return hotelMapper.toResponseDTO(saved);
     }
 
     @Override
     @Transactional
-    public HotelResponseDTO updateHotel(Long id, HotelUpdateDTO dto) {
-        HotelEntity entity = hotelRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Không thể tìm khách sạn với id: " + id));
+    public HotelResponseDTO updateHotel(HotelUpdateDTO dto) {
+        HotelEntity entity = hotelRepository.findById(dto.getId())
+                .orElseThrow(() -> new NoSuchElementException("Không thể tìm khách sạn với id: " + dto.getId()));
+
+        Long ownerId = entity.getUser().getId();
 
         // Chuẩn hoá input để check trùng (loại trừ chính nó)
         String name = normalize(dto.getName());
         String addr = normalize(dto.getAddress());
         String city = normalize(dto.getCity());
 
-        boolean dup = hotelRepository.existsDuplicate(name, addr, city, id);
+        boolean dup = hotelRepository.existsDuplicate(name, addr, city, ownerId, dto.getId());
         if (dup) {
             throw new IllegalArgumentException("Thông tin cập nhật bị trùng với khách sạn khác!");
         }

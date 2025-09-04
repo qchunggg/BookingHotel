@@ -13,4 +13,6 @@ public class HotelFilterDTO extends PageFilterDTO {
     private Double minRating;     // lọc rating >=
 
     private Double maxRating;     // lọc rating <=
+
+    private Long userId;
 }

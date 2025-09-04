@@ -45,4 +45,8 @@ public class HotelEntity {
 
     @Column(length = 255, name = "PAYOS_CHECKSUM_KEY")
     private String payosChecksumKey;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")                   // cho phép null đối với USER/ADMIN
+    private UserEntity user;
 }

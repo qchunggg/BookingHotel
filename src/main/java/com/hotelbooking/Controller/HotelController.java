@@ -8,8 +8,11 @@ import com.hotelbooking.Service.HotelService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,35 +24,33 @@ public class HotelController {
     @Autowired
     private HotelService hotelService;
 
-    @PostMapping("/search-hotels")
-    public ResponseEntity<Page<HotelResponseDTO>> searchAndFilterHotels(@RequestBody HotelFilterDTO filter) {
-        Page<HotelResponseDTO> hotel = hotelService.search(filter);
-        return ResponseEntity.ok(hotel);
-    }
-
-    @PostMapping("/{id}")
-    public ResponseEntity<HotelResponseDTO> getHotelById(@PathVariable Long id) {
-        HotelResponseDTO detail = hotelService.getHotelById(id);
-        return ResponseEntity.ok(detail);
-    }
-
     // Tạo mới
     @PostMapping("/create-hotel")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<HotelResponseDTO> createHotel(@RequestBody @Valid HotelCreateDTO dto) {
         HotelResponseDTO hotel = hotelService.createHotel(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(hotel);
     }
 
     // Cập nhật
-    @PostMapping("/update-hotel/{id}")
-    public ResponseEntity<HotelResponseDTO> updateHotel(@PathVariable Long id, @RequestBody @Valid HotelUpdateDTO dto) {
-        HotelResponseDTO update = hotelService.updateHotel(id, dto);
+    @PostMapping("/update-hotel")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<HotelResponseDTO> updateHotel(@RequestBody @Valid HotelUpdateDTO dto) {
+        HotelResponseDTO update = hotelService.updateHotel(dto);
         return ResponseEntity.ok(update);
     }
 
     @PostMapping("/delete-hotels")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Void> deleteHotels(@RequestBody List<Long> ids) {
         hotelService.deleteHotels(ids);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/get-by-user")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<?> getHotelByUserId(@RequestBody HotelFilterDTO filter) {
+        Pageable  pageable = PageRequest.of(filter.getPage(), filter.getLimit());
+        return ResponseEntity.ok(hotelService.getHotelsByUserId(filter.getUserId(), pageable));
     }
 }

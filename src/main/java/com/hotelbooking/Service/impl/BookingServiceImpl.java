@@ -137,7 +137,7 @@ public class BookingServiceImpl implements BookingService {
 
         int nightsInt = Math.toIntExact(nights);
         int total = Math.multiplyExact(nightsInt, pricePerDay);    // 30% đặt cọc (có thể đưa vào Constants cấu hình)
-        int deposit = (total * 30 + 99) / 100; ;
+        int deposit = (total * 30 + 99) / 100;
 
         entity.setPricePerDay(pricePerDay);  // <-- NEW: lưu snapshot
         entity.setTotalPrice(total);
@@ -153,9 +153,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public BookingResponseDTO updateBooking(Long id, BookingUpdateDTO dto) {
-        BookingEntity existing = bookingRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Không tìm thấy đặt phòng với id: " + id));
+    public BookingResponseDTO updateBooking(BookingUpdateDTO dto) {
+        BookingEntity existing = bookingRepository.findById(dto.getId())
+                .orElseThrow(() -> new NoSuchElementException("Không tìm thấy đặt phòng với id: " + dto.getId()));
 
         // Chặn đổi ngày khi đã ở/đã trả
         if (existing.getBookingStatus() == BookingStatus.CHECKED_IN ||

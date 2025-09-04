@@ -1,9 +1,8 @@
 package com.hotelbooking.DTO.UserDTO;
 
-import com.hotelbooking.Enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -27,8 +26,6 @@ public class UserCreateDTO {
     private String email;
 
     @Size(max = 10, message = "Số điện thoại tối đa 10 ký tự")
+    @Pattern(regexp = "0\\d{9}", message = "Số điện thoại phải bắt đầu bằng 0 và đủ 10 số")
     private String phone;
-
-    @NotNull(message = "Role không được để trống")
-    private UserRole role; // USER / ADMIN / MANAGER
 }
