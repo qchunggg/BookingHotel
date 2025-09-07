@@ -69,11 +69,8 @@ public class UserServiceImpl  implements UserService {
     @Override
     @Transactional
     public UserResponseDTO createUser(UserCreateDTO dto) {
-        String userNameNorm = normalize(dto.getUserName());
-        String emailNorm    = normalize(dto.getEmail());
-        String phoneNorm    = normalizePhone(dto.getPhone());
 
-        Boolean dup = userRepository.existsDuplicate(userNameNorm, emailNorm, phoneNorm, null);
+        Boolean dup = userRepository.existsDuplicate(dto.getUserName(), dto.getEmail(), dto.getPhone(), null);
         if (dup) {
             throw new IllegalArgumentException("Người dùng đã tồn tại!");
         }
@@ -92,11 +89,8 @@ public class UserServiceImpl  implements UserService {
         UserEntity entity = userRepository.findById(dto.getId())
                 .orElseThrow(() -> new NoSuchElementException("Không tìm thấy user với id: " + dto.getId()));
 
-        String userNameNorm = normalize(dto.getUserName());
-        String emailNorm    = normalize(dto.getEmail());
-        String phoneNorm    = normalizePhone(dto.getPhone());
 
-        Boolean dup = userRepository.existsDuplicate(userNameNorm, emailNorm, phoneNorm, dto.getId());
+        Boolean dup = userRepository.existsDuplicate(dto.getUserName(), dto.getEmail(), dto.getPhone(), dto.getId());
         if (dup) {
             throw new IllegalArgumentException("Người dùng đã tồn tại!");
         }
@@ -168,9 +162,5 @@ public class UserServiceImpl  implements UserService {
 
     private String normalize(String s) {
         return s == null ? "" : s.trim().toLowerCase();
-    }
-
-    private String normalizePhone(String s) {
-        return s == null ? null : s.replaceAll("\\D", "");
     }
 }

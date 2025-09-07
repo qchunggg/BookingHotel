@@ -15,9 +15,11 @@ public class HotelUpdateDTO {
     private String name;
 
     @Size(max = 255, message = "Địa chỉ tối đa 255 ký tự")
+    @NotBlank(message = "Địa chỉ không được để trống")
     private String address;
 
     @Size(max = 100, message = "Tên thành phố tối đa 100 ký tự")
+    @NotBlank(message = "Tên thành phố không được để trống")
     private String city;
 
     @Size(max = 500, message = "Mô tả tối đa 500 ký tự")
