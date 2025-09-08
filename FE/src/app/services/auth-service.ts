@@ -6,6 +6,7 @@ import { LoginRequest, LoginResponse } from '../models/auth.model';
 import { HotelFilter, HotelResponse } from '../models/hotel.model';
 import { Page } from '../models/page-filter.model';
 import { RoomFilter, RoomResponse } from '../models/room.model';
+import { UserRole } from '../enums/user-role.enum';
 
 const BASE = 'http://localhost:8080/auth';
 const TOKEN_KEY = 'JWT';
@@ -46,6 +47,16 @@ export class AuthService {
 
   getToken(): string | null { return localStorage.getItem(TOKEN_KEY); }
   isLoggedIn(): boolean      { return !!this.getToken(); }
+
+  get roles(): string[] {
+    const r = this._user$.value?.role;
+    return r ? [r] : [];
+  }
+
+  /** Kiểm tra user có thuộc 1 trong các role được yêu cầu hay không */
+  hasRole(...need: (UserRole | string)[]): boolean {
+    return need.some(r => this.roles.includes(r.toString()));
+  }
 
   searchHotels(f: HotelFilter): Observable<Page<HotelResponse>> {
     return this.http.post<Page<HotelResponse>>(`${BASE}/search-hotels`, f);

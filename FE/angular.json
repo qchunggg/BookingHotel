@@ -19,10 +19,25 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/css/jquery-ui.min.css",
+              "src/assets/css/colorbox.css",
+              "src/assets/css/main_styles.css",
+              "src/assets/css/responsive.css",
+              "src/assets/css/animate.css",
+              "src/assets/css/owl.carousel.css",
+              "src/assets/css/owl.theme.default.css"
+            ],
+            "scripts": [
+              "src/assets/js/jquery-3.3.1.min.js",
+              "src/assets/js/jquery-ui.min.js",
+              "src/assets/js/jquery.colorbox-min.js",
+              "src/assets/js/owl.carousel.js",
+              "src/assets/js/custom.js"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",

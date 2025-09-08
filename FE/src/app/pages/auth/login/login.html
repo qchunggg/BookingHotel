@@ -1,0 +1,59 @@
+<div class="login-wrapper">
+    <div class="login-container glass-effect">
+        <div class="logo text-center mb-3">
+            <img src="https://via.placeholder.com/120" alt="Hotel Logo" />
+        </div>
+
+        <h2 class="text-center mb-4">Chào mừng</h2>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <!-- USERNAME ---------------------------------------------------------->
+            <div class="mb-3">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input formControlName="userName" type="text" class="form-control" id="username"
+                        placeholder="Nhập tên đăng nhập của bạn" />
+                </div>
+                <small *ngIf="f.userName.touched && f.userName.invalid" class="text-danger">Bắt buộc nhập.</small>
+            </div>
+
+            <!-- PASSWORD ---------------------------------------------------------->
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input formControlName="password" type="password" class="form-control" id="password"
+                        placeholder="Nhập mật khẩu của bạn" />
+                </div>
+            </div>
+
+            <!-- REMEMBER ME (tuỳ chọn ràng buộc FormControl hoặc bỏ) ------------->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe" formControlName="remember" />
+                <label class="form-check-label" for="rememberMe">Ghi nhớ tài khoản</label>
+            </div>
+
+            <!-- BUTTON + LOADING -------------------------------------------------->
+            <button type="submit" class="btn btn-primary w-100" [disabled]="loading()">
+                <span *ngIf="!loading()">Đăng nhập</span>
+                <span *ngIf="loading()" class="spinner-border spinner-border-sm"></span>
+            </button>
+
+            <!-- ERROR MSG -->
+            <p *ngIf="errorMsg()" class="text-danger text-center mt-2">{{ errorMsg() }}</p>
+
+            <!-- LINKS ------------------------------------------------------------->
+            <div class="mt-3 text-center">
+                <p class="form-text">
+                    Quên mật khẩu?
+                    <a routerLink="/forgot-password">Đặt lại mật khẩu</a>
+                </p>
+                <p class="form-text">
+                    Mới đến với khách sạn của chúng tôi?
+                    <a routerLink="/register">Tạo tài khoản</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

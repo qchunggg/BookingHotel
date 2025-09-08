@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Mon Sep 08 11:38:20 ICT 2025
+jakarta.validation-api-3.0.2.jar>maven-central=
+jakarta.validation-api-3.0.2.pom>maven-central=

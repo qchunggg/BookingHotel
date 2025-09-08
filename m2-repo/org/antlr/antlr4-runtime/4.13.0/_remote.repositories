@@ -1,0 +1,4 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Mon Sep 08 11:38:20 ICT 2025
+antlr4-runtime-4.13.0.jar>maven-central=
+antlr4-runtime-4.13.0.pom>maven-central=
