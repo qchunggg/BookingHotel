@@ -1,1 +1,124 @@
-<p>register works!</p>
+<div class="register-wrapper">
+    <div class="register-container glass-effect">
+        <div class="logo text-center mb-3">
+            <!-- <img src="https://via.placeholder.com/120" alt="Hotel Logo" /> -->
+        </div>
+
+        <h2 class="text-center mb-4">Đăng Ký</h2>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <!-- USERNAME -->
+            <div class="mb-3 input-group-wrapper">
+                <label for="username" class="form-label">Tên đăng nhập</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                    <input formControlName="userName" type="text" class="form-control" id="username"
+                        placeholder="Nhập tên đăng nhập" />
+                </div>
+
+                <div class="error-slot">
+                    <small class="error-line" [class.visible]="f.userName.touched && f.userName.invalid">
+                        {{ f.userName.errors?.['required']
+                        ? 'Tên người dùng không được để trống.'
+                        : f.userName.errors?.['maxlength']
+                        ? 'Tối đa 50 ký tự.'
+                        : '' }}
+                    </small>
+                </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="mb-3 input-group-wrapper">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                    <input formControlName="password" type="password" class="form-control" id="password"
+                        placeholder="Nhập mật khẩu" />
+                </div>
+
+                <div class="error-slot">
+                    <small class="error-line" [class.visible]="f.password.touched && f.password.invalid">
+                        {{ f.password.errors?.['required']
+                        ? 'Mật khẩu không được để trống.'
+                        : f.password.errors?.['minlength']
+                        ? 'Tối thiểu 6 ký tự.'
+                        : '' }}
+                    </small>
+                </div>
+            </div>
+
+            <!-- FULLNAME -->
+            <div class="mb-3 input-group-wrapper">
+                <label for="fullName" class="form-label">Họ và tên</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-address-card"></i></span>
+                    <input formControlName="fullName" type="text" class="form-control" id="fullName"
+                        placeholder="Nhập họ và tên" />
+                </div>
+
+                <div class="error-slot">
+                    <small class="error-line" [class.visible]="f.fullName.touched && f.fullName.invalid">
+                        {{ f.fullName.errors?.['required']
+                        ? 'Họ và tên không được để trống.'
+                        : f.fullName.errors?.['maxlength']
+                        ? 'Tối đa 100 ký tự.'
+                        : '' }}
+                    </small>
+                </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="mb-3 input-group-wrapper">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                    <input formControlName="email" type="email" class="form-control" id="email"
+                        placeholder="Nhập email" />
+                </div>
+
+                <div class="error-slot">
+                    <small class="error-line" [class.visible]="f.email.touched && f.email.invalid">
+                        {{ f.email.errors?.['required']
+                        ? 'Email không được để trống.'
+                        : f.email.errors?.['email']
+                        ? 'Email không hợp lệ.'
+                        : '' }}
+                    </small>
+                </div>
+            </div>
+
+            <!-- PHONE (không bắt buộc) -->
+            <div class="mb-3 input-group-wrapper">
+                <label for="phone" class="form-label">Số điện thoại</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                    <input formControlName="phone" type="tel" class="form-control" id="phone"
+                        placeholder="Nhập số điện thoại" />
+                </div>
+
+                <div class="error-slot">
+                    <small class="error-line" [class.visible]="f.phone.touched && f.phone.invalid">
+                        {{ f.phone.errors?.['pattern']
+                        ? 'Định dạng 0xxxxxxxxx.'
+                        : f.phone.errors?.['maxlength']
+                        ? 'Tối đa 10 số.'
+                        : '' }}
+                    </small>
+                </div>
+            </div>
+
+
+            <div class="form-footer">
+                <button type="submit" class="btn btn-primary" [disabled]="loading()">
+                    <span *ngIf="!loading()">Đăng ký</span>
+                    <span *ngIf="loading()" class="spinner-border spinner-border-sm"></span>
+                </button>
+
+                <p class="below text-center">
+                    Đã có tài khoản?
+                    <a (click)="login()">Đăng nhập</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

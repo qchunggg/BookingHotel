@@ -60,11 +60,18 @@ $(document).ready(function () {
 
 	function setHeader() {
 		if ($(window).scrollTop() > 91) {
-			header.addClass('scrolled');
+			$('.header').addClass('scrolled');
+		} else {
+			$('.header').removeClass('scrolled');
 		}
-		else {
-			header.removeClass('scrolled');
-		}
+	}
+
+	// Gọi lại scroll event
+	function bindScrollForHeader() {
+		$(document).off('scroll', setHeader); // tránh gắn trùng nhiều lần
+		$(document).on('scroll', setHeader);
+		$(window).off('resize', setHeader);
+		$(window).on('resize', setHeader);
 	}
 
 	/* 
@@ -308,7 +315,6 @@ $(document).ready(function () {
 				});
 		}
 	}
-
 	window.TEMPLATE = {
 		initMenu,
 		initHomeSlider,
@@ -319,6 +325,9 @@ $(document).ready(function () {
 		initBookingSlider,
 		initBlogSlider
 	};
+
+	window.setHeader = setHeader;
+	window.bindScrollForHeader = bindScrollForHeader;
 });
 
 

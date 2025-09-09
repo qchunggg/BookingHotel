@@ -1,0 +1,196 @@
+/* ========= NỀN & CARD ========= */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background: linear-gradient(135deg, #6b48ff 0%, #00ddeb 100%);
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+.register-wrapper {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    width: 100%;
+}
+
+.register-container {
+    /* card khung, không cuộn; form bên trong sẽ cuộn */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 48px);
+    width: clamp(380px, 42vw, 660px);
+    /* hẹp hơn */
+    border-radius: 24px;
+    background: rgba(255, 255, 255, .95);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .2);
+    padding: 20px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(16px) scale(.985);
+    filter: blur(2px);
+    transition: opacity .35s ease, transform .35s ease, filter .35s ease;
+    will-change: opacity, transform, filter;
+}
+
+.register-container.enter {
+    opacity: 1;
+    transform: none;
+    filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .register-container {
+        transition: none !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .register-wrapper {
+        padding: 0;
+    }
+
+    .register-container {
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0;
+        padding: 12px;
+    }
+}
+
+/* ========= TIÊU ĐỀ ========= */
+.register-container h2 {
+    margin: 6px 0 14px;
+    text-align: center;
+    color: #1a1a3d;
+    font-weight: 700;
+}
+
+/* ========= FORM (vùng cuộn) ========= */
+.register-container form {
+    flex: 1 1 auto;
+    min-height: 0;
+    /* cần cho flex child để cuộn */
+    overflow: auto;
+    /* chỉ form cuộn */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 12px;
+    /* khoảng đệm cuối form */
+}
+
+/* bỏ mọi hiệu ứng fade đáy trước đây nếu có */
+.register-container::after {
+    display: none !important;
+}
+
+/* ========= INPUT & LABEL ========= */
+.input-group-wrapper {
+    margin-bottom: .25rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #1a1a3d;
+}
+
+.form-control {
+    border-radius: 12px;
+    padding: .9rem;
+    border: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    transition: all .22s ease;
+}
+
+.form-control:focus {
+    border-color: #6b48ff;
+    box-shadow: 0 0 8px rgba(107, 72, 255, .3);
+    background: #fff;
+}
+
+.input-group-text {
+    background: #f8f9fa;
+    border-radius: 12px 0 0 12px;
+    border: 1px solid #e0e0e0;
+    color: #6b48ff;
+}
+
+/* ========= LỖI 1 DÒNG (không làm dài form) + hiệu ứng ========= */
+.error-slot {
+    height: 20px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+.error-line {
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    font-size: .82rem;
+    color: #dc3545;
+    opacity: 0;
+    transform: translateY(-4px) scale(.99);
+    filter: blur(1px);
+    transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+}
+
+.error-line.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+/* trạng thái input */
+.form-control.ng-invalid.ng-touched {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, .08);
+}
+
+.form-control.ng-valid.ng-touched {
+    border-color: #20c997;
+    box-shadow: 0 0 0 4px rgba(32, 201, 151, .08);
+}
+
+/* ========= NÚT ĐĂNG KÝ: CUỘN THEO NỘI DUNG ========= */
+/* Quan trọng: KHÔNG sticky/absolute */
+.register-container form .btn-primary {
+    position: static !important;
+    /* đảm bảo không bị rule cũ ghi đè */
+    width: 100%;
+    display: block;
+    margin-top: 8px;
+    background: linear-gradient(90deg, #6b48ff, #00ddeb);
+    border: none;
+    border-radius: 12px;
+    padding: .9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 18px rgba(107, 72, 255, .18);
+    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+
+.register-container form .btn-primary:hover {
+    transform: translateY(-2px);
+    filter: saturate(1.05);
+}
+
+/* ========= (tuỳ) Link dưới nút ========= */
+.form-text a {
+    color: #6b48ff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color .2s;
+}
+
+.form-text a:hover {
+    color: #00ddeb;
+    text-decoration: underline;
+}

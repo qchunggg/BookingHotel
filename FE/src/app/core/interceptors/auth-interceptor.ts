@@ -14,24 +14,16 @@ export class AuthInterceptor implements HttpInterceptor {
   private router = inject(Router);
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    /* 1️⃣ Gắn Authorization nếu đã có token */
-    const jwt = this.auth.getToken();
-    const authReq = jwt ? req.clone({ setHeaders: { Authorization: `Bearer ${jwt}` } }) : req;
+    const withCredReq = req.clone({ withCredentials: true }); // ✅ luôn gửi cookie
 
-    /* 2️⃣ Xử lý response + lỗi */
-    return next.handle(authReq).pipe(
+    return next.handle(withCredReq).pipe(
       catchError((err: HttpErrorResponse) => {
-        /* Nếu backend trả 401 → token hết hạn hoặc không hợp lệ */
         if (err.status === 401) {
-          /* Xoá token & user local (đăng xuất) */
-          this.auth.logout().subscribe({ next: () => { } });   // fire-and-forget
-
-          /* Chuyển về /login + lưu lại URL hiện tại */
+          this.auth.logout().subscribe(); // xoá user state
           this.router.navigate(['/login'], {
-            queryParams: { returnUrl: this.router.url },
+            queryParams: { returnUrl: this.router.url }
           });
         }
-        /* Propagate lỗi cho component khác nếu cần */
         return throwError(() => err);
       })
     );

@@ -16,11 +16,11 @@ const TOKEN_KEY = 'JWT';
 })
 export class AuthService {
 
-    /** Giữ thông tin user hiện tại */
+  /** Giữ thông tin user hiện tại */
   private _user$ = new BehaviorSubject<UserResponse | null>(null);
-  user$          = this._user$.asObservable();
+  user$ = this._user$.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   register(dto: UserCreate): Observable<UserResponse> {
     return this.http.post<UserResponse>(`${BASE}/register`, dto);
@@ -28,9 +28,10 @@ export class AuthService {
 
   /** POST /auth/login */
   login(dto: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${BASE}/login`, dto).pipe(
+    return this.http.post<LoginResponse>(`${BASE}/login`, dto, {
+      withCredentials: true  // ✅ Cho phép gửi + nhận cookie
+    }).pipe(
       tap(res => {
-        localStorage.setItem(TOKEN_KEY, res.token);
         this._user$.next(res.userInfo);
       })
     );
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   getToken(): string | null { return localStorage.getItem(TOKEN_KEY); }
-  isLoggedIn(): boolean      { return !!this.getToken(); }
+  isLoggedIn(): boolean { return !!this.getToken(); }
 
   get roles(): string[] {
     const r = this._user$.value?.role;
