@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth-service';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
-export class Register implements AfterViewInit {
+export class Register implements OnInit {
 
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
@@ -26,26 +26,23 @@ export class Register implements AfterViewInit {
   form = this.fb.nonNullable.group({
     userName: ['', [Validators.required, Validators.maxLength(50)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required]],
     fullName: ['', [Validators.required, Validators.maxLength(100)]],
-    email: [
-      '',
-      [Validators.required, Validators.email],
-    ],
-    phone: [
-      '',
-      [Validators.pattern(/^0\d{9}$/), Validators.maxLength(10)],
-    ],
+    email: ['', [Validators.required, Validators.email]],
+    phone: ['', [Validators.pattern(/^0\d{9}$/), Validators.maxLength(10)]],
   });
+
+  // Custom validator để kiểm tra confirmPassword khớp với password
+  ngOnInit() {
+    this.form.controls.confirmPassword.addValidators((control: AbstractControl) => {
+      const password = this.form.controls.password.value;
+      const confirmPassword = control.value;
+      return password === confirmPassword ? null : { mismatch: true };
+    });
+  }
 
   get f(): { [K in keyof typeof this.form.controls]: AbstractControl } {
     return this.form.controls;
-  }
-
-  ngAfterViewInit(): void {
-    const el = document.querySelector('.register-container') as HTMLElement | null;
-    if (el) {
-      requestAnimationFrame(() => el.classList.add('enter'));
-    }
   }
 
   submit(): void {
@@ -73,25 +70,23 @@ export class Register implements AfterViewInit {
     });
   }
 
+  // SỬA LẠI HÀM login() ĐỂ GIỐNG BÊN LOGIN COMPONENT
   login(): void {
     const container = document.querySelector('.register-container') as HTMLElement | null;
-    if (container) {
-      container.style.transition = 'opacity 0.3s ease';
-      container.style.opacity = '0';
 
-      setTimeout(() => {
-        this.router.navigate(['/login']).then(() => {
-          // Thêm hiệu ứng fade-in trên trang register
-          const loginContainer = document.querySelector('.register-container') as HTMLElement | null;
-          if (loginContainer) {
-            loginContainer.style.opacity = '0';
-            setTimeout(() => {
-              loginContainer.style.transition = 'opacity 0.3s ease';
-              loginContainer.style.opacity = '1';
-            }, 50);
-          }
-        });
-      }, 500);
+    if (!container) {
+      this.router.navigate(['/login']);
+      return;
     }
+
+    container.classList.add('leave');
+
+    const onDone = () => {
+      container.removeEventListener('transitionend', onDone);
+      this.router.navigate(['/login']);
+    };
+    container.addEventListener('transitionend', onDone);
+
+    setTimeout(() => this.router.navigate(['/login']), 200);
   }
 }

@@ -1,71 +1,83 @@
-<footer class="footer">
-    <div class="footer_content">
+<footer class="site-footer text-light">
+    <div class="footer-top">
         <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="footer_logo_container text-center">
-                        <div class="footer_logo">
-                            <a href="#"></a>
-                            <div>The River</div>
-                            <div>since 1945</div>
+            <div class="row g-4 align-items-start">
+
+                <!-- Brand -->
+                <div class="col-12 col-lg-3">
+                    <div class="footer-brand text-center text-lg-start">
+                        <a routerLink="/" class="brand-badge d-inline-flex align-items-center justify-content-center">
+                            <span class="fw-bold">The River</span>
+                        </a>
+                        <p class="mb-0 mt-2 small-500 text-opacity">since 1945</p>
+                        <div class="mt-3 d-flex gap-2 justify-content-center justify-content-lg-start">
+                            <a href="#" aria-label="Facebook" class="btn btn-sm btn-outline-light-ghost">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="#" aria-label="Instagram" class="btn btn-sm btn-outline-light-ghost">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="#" aria-label="Twitter" class="btn btn-sm btn-outline-light-ghost">
+                                <i class="fa-brands fa-x-twitter"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row footer_row">
 
                 <!-- Address -->
-                <div class="col-lg-3">
-                    <div class="footer_title">Our Address</div>
-                    <div class="footer_list">
-                        <ul>
-                            <li>Beach Str. 345</li>
-                            <li>67559 Miami</li>
-                            <li>USA</li>
-                        </ul>
-                    </div>
+                <div class="col-6 col-lg-3">
+                    <h6 class="footer-title">Our Address</h6>
+                    <ul class="list-unstyled footer-list">
+                        <li>Beach Str. 345</li>
+                        <li>67559 Miami</li>
+                        <li>USA</li>
+                    </ul>
                 </div>
 
                 <!-- Reservations -->
-                <div class="col-lg-3">
-                    <div class="footer_title">Reservations</div>
-                    <div class="footer_list">
-                        <ul>
-                            <li>Tel: 345 5667 889</li>
-                            <li>Fax; 6783 4567 889</li>
-                            <li>reservations@hotelriver.com</li>
-                        </ul>
-                    </div>
+                <div class="col-6 col-lg-3">
+                    <h6 class="footer-title">Reservations</h6>
+                    <ul class="list-unstyled footer-list">
+                        <li>Tel: <a href="tel:+13455667889" class="link-underline">+1 345 5667 889</a></li>
+                        <li>Fax: +1 6783 4567 889</li>
+                        <li>Email: <a href="mailto:reservations@hotelriver.com"
+                                class="link-underline">reservations@hotelriver.com</a></li>
+                    </ul>
                 </div>
 
                 <!-- Newsletter -->
-                <div class="col-lg-3">
-                    <div class="footer_title">Newsletter</div>
-                    <div class="newsletter_container">
-                        <form action="#" class="newsletter_form" id="newsletter_form">
-                            <input type="email" class="newsletter_input" placeholder="Your email address"
-                                required="required">
-                            <button class="newsletter_button">Subscribe</button>
-                        </form>
+                <div class="col-12 col-lg-3">
+                    <h6 class="footer-title">Newsletter</h6>
+                    <form class="newsletter row g-2" (submit)="false">
+                        <div class="col-12">
+                            <input type="email" class="form-control form-control-sm footer-input"
+                                placeholder="Your email address" required>
+                        </div>
+                        <div class="col-12 d-grid">
+                            <button type="submit" class="btn btn-gradient btn-sm">Subscribe</button>
+                        </div>
+                        <div class="col-12">
+                            <small class="text-opacity">No spam. Unsubscribe any time.</small>
+                        </div>
+                    </form>
+                    <div class="certs d-flex align-items-center gap-3 mt-3 flex-wrap">
+                        <img src="/assets/images/cert_1.png" alt="Certificate 1" class="cert-img">
+                        <img src="/assets/images/cert_2.png" alt="Certificate 2" class="cert-img">
                     </div>
                 </div>
 
-                <!-- Footer images -->
-                <div class="col-lg-3">
-                    <div
-                        class="certificates d-flex flex-row align-items-start justify-content-lg-between justify-content-start flex-lg-nowrap flex-wrap">
-                        <div class="cert"><img src="assets/images/cert_1.png" alt=""></div>
-                        <div class="cert"><img src="assets/images/cert_2.png" alt=""></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    <div class="copyright">
-        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-        Copyright &copy;
-        <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with
-        <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+
+    <!-- Bottom -->
+    <div class="footer-bottom">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+            <small>© {{ currentYear }} The River. All rights reserved.</small>
+            <small class="mb-0 text-opacity">
+                Made with <i class="fa fa-heart"></i> by
+                <a href="https://colorlib.com" target="_blank" rel="noopener" class="link-underline">Colorlib</a>
+            </small>
+        </div>
     </div>
 </footer>

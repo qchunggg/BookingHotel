@@ -1,13 +1,11 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter } from 'rxjs/internal/operators/filter';
-import { AuthService } from '../../services/auth-service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
 import { Header } from './header/header';
 import { Footer } from './footer/footer';
 
-declare const window: any;
+
 
 @Component({
   selector: 'app-home',
@@ -20,70 +18,6 @@ declare const window: any;
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home implements OnInit, AfterViewInit {
-  private platformId = inject(PLATFORM_ID);
-  private router = inject(Router);
-  private authService = inject(AuthService);
+export class Home {
 
-  user = toSignal(this.authService.user$, { initialValue: null });
-
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.waitForTemplate().then(() => {
-        this.callTemplateScripts();
-
-        this.router.events
-          .pipe(filter(e => e instanceof NavigationEnd))
-          .subscribe((e: NavigationEnd) => {
-            if (e.urlAfterRedirects === '/') {
-              setTimeout(() => this.callTemplateScripts(), 100);
-            }
-          });
-      });
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      // 👇 DOM đã render xong, gọi jQuery hoặc JS ngoài tại đây
-      this.callTemplateScripts();
-    }
-  }
-
-  logout(): void {
-    this.authService.logout().subscribe();
-  }
-
-  private callTemplateScripts(): void {
-    const T = window.TEMPLATE;
-    if (!T) return;
-    T.initMenu?.();
-    T.initHomeSlider?.();
-    T.initDatePicker?.();
-    T.initSvg?.();
-    T.initGallery?.();
-    T.initTestSlider?.();
-    T.initBookingSlider?.();
-    T.initBlogSlider?.();
-
-    if (typeof window.setHeader === 'function') {
-      window.setHeader();
-    }
-
-    if (typeof window.bindScrollForHeader === 'function') {
-      window.bindScrollForHeader();
-    }
-  }
-
-  private waitForTemplate(): Promise<void> {
-    return new Promise((resolve) => {
-      const check = () => {
-        if (window.TEMPLATE) {
-          return resolve();
-        }
-        setTimeout(check, 50); // check lại sau 50ms
-      };
-      check();
-    });
-  }
 }

@@ -15,18 +15,36 @@ import { UpdateRoom } from "./pages/rooms/update-room/update-room";
 import { roleGuard } from "./core/guards/role-guard-guard";
 import { UserRole } from "./enums/user-role.enum";
 import { Home } from './pages/home/home';
+import path from 'path';
+import { Center } from './pages/home/center/center';
 
 export const routes: Routes = [
     /* ---------- PUBLIC ---------- */
-    { path: '', component: Home },
+    {
+        path: '', component: Home,
+        children: [
+            {
+                path: '',
+                component: Center
+            },
+            {
+                path: 'login',
+                component: Login
+            },
+            {
+                path: 'register',
+                component: Register
+            }
+        ]
+    },
     { path: 'hotels', component: Hotels },
     { path: 'hotel/:id', component: DetailHotel },
 
     { path: 'rooms', component: Rooms },
     { path: 'room/:id', component: DetailRoom },
 
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
+    // { path: 'login', component: Login },
+    // { path: 'register', component: Register },
 
     /* ---------- PRIVATE (need login) ---------- */
     { path: 'booking', component: Booking, canActivate: [authGuardFn] },
